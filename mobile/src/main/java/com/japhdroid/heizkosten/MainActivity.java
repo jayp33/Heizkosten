@@ -1,9 +1,16 @@
 package com.japhdroid.heizkosten;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Context;
+import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements IBaseGpsListener {
 
     Status status = new Status();
     CostCalculator calculator = new CostCalculator();
@@ -12,6 +19,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        try {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        } catch (SecurityException e) {
+            Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void increaseAllowedSpeed(View view) {
@@ -61,6 +74,11 @@ public class MainActivity extends AppCompatActivity {
         updateStatus(speeding);
     }
 
+    public void updateActualSpeed() {
+        TextView tv = (TextView) findViewById(R.id.actualSpeed);
+        tv.setText(String.valueOf(status.actualSpeed));
+    }
+
     public void updateStatus(Speeding speeding) {
         TextView tvFee = (TextView) findViewById(R.id.fee);
         TextView tvPoints = (TextView) findViewById(R.id.points);
@@ -68,5 +86,51 @@ public class MainActivity extends AppCompatActivity {
         tvFee.setText(speeding.getFeeStr());
         tvPoints.setText(speeding.getPointsStr());
         tvRevocation.setText(speeding.getRevocationStr());
+    }
+
+    public void updateSpeed(CLocation location) {
+        float nCurrentSpeed = 0;
+
+        TextView tv = (TextView) findViewById(R.id.updateCounter);
+        tv.setText(String.valueOf(Integer.parseInt(tv.getText().toString()) + 1));
+        if (location != null) {
+            tv.setTextColor(Color.BLACK);
+            location.setUseMetricunits(true);
+            nCurrentSpeed = location.getSpeed();
+            status.actualSpeed = Math.round(nCurrentSpeed);
+        } else {
+            tv.setTextColor(Color.LTGRAY);
+            status.actualSpeed = 0;
+        }
+        updateActualSpeed();
+        updateStatus(calculator.speeding(status));
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        if (location != null) {
+            CLocation myLocation = new CLocation(location, true);
+            this.updateSpeed(myLocation);
+        }
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onGpsStatusChanged(int event) {
+
     }
 }
