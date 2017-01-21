@@ -15,14 +15,11 @@ public class CostCalculator {
 
     private boolean inCity = true;
 
-    public void setInCity(boolean inCity) {
-        this.inCity = inCity;
-    }
-
-    public Speeding speeding(int tooFastSpeed) {
-        int tooFastIndex = getTooFastIndex(tooFastSpeed);
+    public Speeding speeding(Status status) {
+        inCity = status.inCity;
+        int tooFastIndex = getTooFastIndex(status.actualSpeed - status.allowedSpeed);
         if (tooFastIndex < 0)
-            return null;
+            return new Speeding(0, 0, 0);
         if (inCity)
             return new Speeding(fee_city[tooFastIndex], points_city[tooFastIndex], revocation_city[tooFastIndex]);
         else

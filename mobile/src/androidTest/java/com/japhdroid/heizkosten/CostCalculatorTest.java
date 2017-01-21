@@ -20,18 +20,24 @@ public class CostCalculatorTest extends TestCase {
     }
 
     public void testSpeeding_5_InCity() throws Exception {
+        Status status = new Status();
+        status.allowedSpeed = 50;
+        status.actualSpeed = 55;
+        status.inCity = true;
         CostCalculator calc = new CostCalculator();
-        calc.setInCity(true);
-        Speeding speeding = calc.speeding(5);
+        Speeding speeding = calc.speeding(status);
         assertEquals(15, speeding.getFee());
         assertEquals(0, speeding.getPoints());
         assertEquals(0, speeding.getRevocation());
     }
 
     public void testSpeeding_43_OnHighway() throws Exception {
+        Status status = new Status();
+        status.allowedSpeed = 100;
+        status.actualSpeed = 143;
+        status.inCity = false;
         CostCalculator calc = new CostCalculator();
-        calc.setInCity(false);
-        Speeding speeding = calc.speeding(43);
+        Speeding speeding = calc.speeding(status);
         assertEquals(160, speeding.getFee());
         assertEquals(2, speeding.getPoints());
         assertEquals(1, speeding.getRevocation());
