@@ -19,11 +19,25 @@ public class Speeding {
         return fee;
     }
 
+    public String getFeeStr() {
+        return String.valueOf(fee);
+    }
+
     public int getPoints() {
         return points;
     }
 
+    public String getPointsStr() {
+        return String.valueOf(points);
+    }
+
     public int getRevocation() {
         return revocation;
+    }
+
+    public String getRevocationStr() {
+        if (revocation < 0)
+                return "(" + Math.abs(revocation) + ")";
+        return String.valueOf(revocation);
     }
 }
