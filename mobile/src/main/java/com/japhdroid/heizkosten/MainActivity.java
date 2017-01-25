@@ -7,6 +7,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,6 +87,13 @@ public class MainActivity extends AppCompatActivity implements IBaseGpsListener 
         tvFee.setText(speeding.getFeeStr());
         tvPoints.setText(speeding.getPointsStr());
         tvRevocation.setText(speeding.getRevocationStr());
+        LinearLayout costLayout = (LinearLayout) findViewById(R.id.costLayout);
+        if (speeding.getPoints() > 0)
+            costLayout.setBackgroundColor(Color.parseColor("#FF6666")); // red
+        else if (speeding.getFee() > 0)
+            costLayout.setBackgroundColor(Color.parseColor("#FFFF66")); // yellow
+        else
+            costLayout.setBackgroundColor(Color.parseColor("#66B266")); // green
     }
 
     public void updateSpeed(CLocation location) {
