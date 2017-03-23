@@ -15,14 +15,40 @@ public class MainActivity extends AppCompatActivity implements IBaseGpsListener 
 
     Status status = new Status();
     CostCalculator calculator = new CostCalculator();
+    LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        startLocationUpdates();
+    }
+
+    @Override
+    protected void onStop() {
+        stopLocationUpdates();
+        super.onStop();
+    }
+
+    public void startLocationUpdates() {
+        LinearLayout costLayout = (LinearLayout) findViewById(R.id.costLayout);
+        costLayout.setBackgroundColor(Color.parseColor("#CCCCCC")); // grey
         try {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        } catch (SecurityException e) {
+            Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void stopLocationUpdates() {
+        try {
+            locationManager.removeUpdates(this);
         } catch (SecurityException e) {
             Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
