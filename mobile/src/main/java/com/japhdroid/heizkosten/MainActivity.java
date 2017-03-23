@@ -1,6 +1,7 @@
 package com.japhdroid.heizkosten;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
@@ -16,23 +17,31 @@ public class MainActivity extends AppCompatActivity implements IBaseGpsListener 
     Status status = new Status();
     CostCalculator calculator = new CostCalculator();
     LocationManager locationManager;
+    SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        sharedPref = getPreferences(Context.MODE_PRIVATE);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        setAllowedSpeed(sharedPref.getInt("ALLOWED_SPEED", 50));
+        setCity(sharedPref.getBoolean("IN_CITY", true));
         startLocationUpdates();
     }
 
     @Override
     protected void onStop() {
         stopLocationUpdates();
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("ALLOWED_SPEED", status.allowedSpeed);
+        editor.putBoolean("IN_CITY", status.inCity);
+        editor.commit();
         super.onStop();
     }
 
@@ -68,11 +77,20 @@ public class MainActivity extends AppCompatActivity implements IBaseGpsListener 
         }
     }
 
+    public void setAllowedSpeed(int speed) {
+        TextView tv = (TextView) findViewById(R.id.allowedSpeed);
+        tv.setText(String.valueOf(speed));
+        status.allowedSpeed = speed;
+    }
+
     public void toggleCity(View view) {
-        status.inCity = !status.inCity;
+        setCity(!status.inCity);
+    }
+
+    public void setCity(boolean inCity) {
+        status.inCity = inCity;
         TextView tvCity = (TextView) findViewById(R.id.inCity);
-        String inCity = status.inCity ? "Innerorts" : "Außerorts";
-        tvCity.setText(inCity);
+        tvCity.setText(status.inCity ? "Innerorts" : "Außerorts");
     }
 
     public void updateActualSpeed() {
