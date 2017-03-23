@@ -5,10 +5,6 @@
     android:layout_height="match_parent"
     android:keepScreenOn="true"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -16,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
+        android:onClick="increaseAllowedSpeed"
         android:orientation="horizontal">
 
         <TextView
@@ -23,7 +20,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="increaseAllowedSpeed"
             android:text="0"
             android:textAlignment="center"
             android:textSize="40pt"
@@ -34,7 +30,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="increaseActualSpeed"
             android:text="0"
             android:textAlignment="center"
             android:textSize="40pt"
@@ -48,40 +43,95 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
+        android:onClick="decreaseAllowedSpeed"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/fee"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:onClick="decreaseAllowedSpeed"
-            android:text="0"
-            android:textAlignment="center"
-            android:textSize="30pt"
-            tools:text="120" />
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="24dp"
+            android:paddingTop="32dp">
 
-        <TextView
-            android:id="@+id/points"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="matchActualSpeedWithAllowedSpeed"
-            android:text="0"
-            android:textAlignment="center"
-            android:textSize="30pt"
-            tools:text="1" />
+            <TextView
+                android:id="@+id/fee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="0"
+                android:textAlignment="center"
+                android:textSize="30pt"
+                tools:text="120" />
 
-        <TextView
-            android:id="@+id/revocation"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="EUR"
+                android:textAlignment="center"
+                android:textSize="9pt" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:onClick="decreaseActualSpeed"
-            android:text="0"
-            android:textAlignment="center"
-            android:textSize="30pt"
-            tools:text="(1)" />
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="24dp"
+            android:paddingTop="32dp">
+
+            <TextView
+                android:id="@+id/points"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="0"
+                android:textAlignment="center"
+                android:textSize="30pt"
+                tools:text="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Punkte"
+                android:textAlignment="center"
+                android:textSize="9pt" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="24dp"
+            android:paddingTop="32dp">
+
+            <TextView
+                android:id="@+id/revocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="0"
+                android:textAlignment="center"
+                android:textSize="30pt"
+                tools:text="(1)" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Monate"
+                android:textAlignment="center"
+                android:textSize="9pt" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -103,20 +153,12 @@
             android:textSize="12pt"
             tools:text="Außerorts" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="pushStatus"
-            android:text="Einstellungen"
-            android:textAlignment="center"
-            android:textSize="12pt" />
-
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="20dp">
+        android:layout_height="20dp"
+        android:layout_margin="16dp">
 
         <TextView
             android:id="@+id/updateCounter"

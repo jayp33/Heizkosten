@@ -42,37 +42,11 @@ public class MainActivity extends AppCompatActivity implements IBaseGpsListener 
         }
     }
 
-    public void increaseActualSpeed(View view) {
-        TextView tv = (TextView) findViewById(R.id.actualSpeed);
-        tv.setText(String.valueOf(Integer.parseInt(tv.getText().toString()) + 1));
-        status.actualSpeed += 1;
-    }
-
-    public void decreaseActualSpeed(View view) {
-        TextView tv = (TextView) findViewById(R.id.actualSpeed);
-        if (Integer.parseInt(tv.getText().toString()) > 0) {
-            tv.setText(String.valueOf(Integer.parseInt(tv.getText().toString()) - 1));
-            status.actualSpeed -= 1;
-        }
-    }
-
-    public void matchActualSpeedWithAllowedSpeed(View view) {
-        TextView tv = (TextView) findViewById(R.id.actualSpeed);
-        TextView tv1 = (TextView) findViewById(R.id.allowedSpeed);
-        tv.setText(tv1.getText());
-        status.actualSpeed = status.allowedSpeed;
-    }
-
     public void toggleCity(View view) {
         status.inCity = !status.inCity;
         TextView tvCity = (TextView) findViewById(R.id.inCity);
         String inCity = status.inCity ? "Innerorts" : "Außerorts";
         tvCity.setText(inCity);
-    }
-
-    public void pushStatus(View view) {
-        Speeding speeding = calculator.speeding(status);
-        updateStatus(speeding);
     }
 
     public void updateActualSpeed() {
